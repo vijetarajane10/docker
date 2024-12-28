@@ -45,3 +45,26 @@ docker run -d -p80:3000 --name nodecontainer imgname
 Check whether container is created using image :
 docker ps
 -Here the port 80 is port of EC2 instance whereas the port 3000 is port of Nodejs container
+
+
+# Docker File:
+
+FROM node AS build
+WORKDIR /usr/src/app
+COPY package.json .
+COPY . .
+RUN npm install
+CMD ["node","index.js"]
+
+
+
+FROM node AS production
+WORKDIR /usr/src/app
+COPY --from=build /usr/src/app/ ./dist
+COPY --from=build /usr/src/app/package*.json ./
+
+RUN npm install 
+
+EXPOSE 3000
+
+CMD ["node","dist/index.js"]
