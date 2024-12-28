@@ -1,0 +1,17 @@
+# Docker File:
+FROM ubuntu
+RUN apt update -y
+RUN apt install nginx -y
+RUN cd /var/www/html
+RUN touch index.html
+RUN echo "hi..." >index.html
+CMD ["nginx" , "-g" ,"daemon off;"]
+
+Build Dockerfile :
+docker build -t imgname .
+Launch a container using image of this Dockerfile :
+docker run -d -p80:80 --name nginxcontainer imgname
+Check whether container is created using image :
+docker ps
+Check whether image is created using Dockerfile :
+docker images
